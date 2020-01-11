@@ -2,7 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
+
+/*  
+    Компонент Square отображает одиночную кнопку <button>, а Board отображает 9 квадратов. 
+    Компонент Game отображает Board со значениями чисел-заполнителей. 
+*/
 function Square(props) {
+    /* Заполняет компонент Square значением, когда мы щелкаем по нему */
     return (
         <button className="square" onClick={props.onClick}>
         {props.value}
@@ -44,6 +50,7 @@ class Board extends React.Component {
 }
 
 class Game extends React.Component {
+    /* Заполняет массив значением null */
 constructor(props) {
     super(props);
     this.state = {
@@ -56,14 +63,16 @@ constructor(props) {
     xIsNext: true
     };
 }
-
+/* Игнорируем клики если кто-то выйграл или все квадраты заполнены */
 handleClick(i) {
+    /* Cоздает копию массива (вместо мутации) */
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
     if (calculateWinner(squares) || squares[i]) {
     return;
     }
+    /* чередование «Х» и «О» */
     squares[i] = this.state.xIsNext ? "X" : "O";
     this.setState({
     history: history.concat([
@@ -75,7 +84,7 @@ handleClick(i) {
     xIsNext: !this.state.xIsNext
     });
 }
-
+/* Вернуться на орпеделенный ход */
 jumpTo(step) {
     this.setState({
     stepNumber: step,
@@ -85,48 +94,53 @@ jumpTo(step) {
 
 render() {
     const history = this.state.history;
+    /*  Отрисовывает ход */
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
 
     const moves = history.map((step, move) => {
     const desc = move ?
         'Go to move #' + move :
-        'Go to game start';
+        'Restart Game';
     return (
-        <li key={move}>
-        <button onClick={() => this.jumpTo(move)}>{desc}</button>
-        </li>
-    );
+            <div key={move}>
+                <div onClick={() => this.jumpTo(move)}>{desc}</div>
+            </div>
+        );
     });
 
     let status;
     if (winner) {
+    /* Отображаем Победителя  */ 
     status = "Winner: " + winner;
     } else {
+    /* Отображаем какой игрок должен ходить  */ 
     status = "Next player: " + (this.state.xIsNext ? "X" : "O");
     }
 
     return (
     <div className="game">
-        <div className="game-board">
-        <Board
-            squares={current.squares}
-            onClick={i => this.handleClick(i)}
-        />
-        </div>
+
         <div className="game-info">
-        <div>{status}</div>
-        <ol>{moves}</ol>
+            <h2>{status}</h2>
+        </div>  
+        <div className="game-board">
+            <Board
+                squares={current.squares}
+                onClick={i => this.handleClick(i)}
+            />
         </div>
+        <div  className="game-moves">{moves}</div>
+
     </div>
     );
 }
 }
 
 // ========================================
-
 ReactDOM.render(<Game />, document.getElementById("root"));
 
+/* Проверка победителя */
 function calculateWinner(squares) {
 const lines = [
     [0, 1, 2],

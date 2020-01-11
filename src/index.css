@@ -1,17 +1,28 @@
 body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   font: 14px "Century Gothic", Futura, sans-serif;
-  margin: 0 auto;
-  min-width: 600px;
+  margin: auto;
+  background: black;
+  color: #61dafb;
+}
+#root {
+  display: flex;
+  justify-content: center;
 }
 
-/* Title */
+
+/*** Title ***/
 .title {
   text-align: center;
-  font-size: 28px;
-  margin: 5vh;
 }
 .title div {
-  margin: 10px 0;
+  font-size: 56px;
+  font-weight: bold;
+  margin: 0 auto;
 }
 .board-row:after {
   clear: both;
@@ -20,47 +31,77 @@ body {
 }
 
 
-/* Status bar */
-.status {
-  margin-bottom: 10px;
-}
-ol, ul {
-  padding-left: 30px;
-  
-}
-#root {
-  display: flex;
-  justify-content: center;
-  margin: auto;
-}
-
-/* Table */
+/*** Table ***/
 .square {
-  height: 15vh;
-  width: 15vw;
-  background: #fff;
-  border: 1px solid #999;
+  background: #282c34;
+  border: 2px solid #61dafb;
+  color: gold;
   float: left;
-  font-size: 15vh;
+  font-size: 15vw;
   font-weight: bold;
   line-height: 34px;
-  margin-right: -1px;
-  margin-top: -1px;
+  /* margin-right: -1px;
+  margin-top: -1px; */
   padding: 0;
   text-align: center;
-
 }
 .square:focus {
   outline: none;
 }
-.kbd-navigation .square:focus {
+/* .kbd-navigation .square:focus {
   background: #ddd;
-}
+} */
 .game {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 }
-.game-info {
-  margin-left: 50px;
 
+
+/*** Info ***/
+.game-info {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+}
+.game-moves {
+  display: flex;
+  justify-content: center;
+  background: none;
+  color: #61dafb;
+}
+/* Hide Moves*/
+.game-moves div:not(:first-child) {
+  display: none;
+}
+
+
+/*** Button Restart ***/
+.game-moves div div {
+  border: 1px solid #61dafb;
+  margin: 20px;
+  padding: 10px;
+  font-weight: bold;
+}
+.game-moves div div:hover {
+  cursor: pointer;
+  border: 1px solid gold;
+  transition: ease-in-out 0.3s;
+}
+
+
+
+/* Media*/
+@media (orientation: portrait) {
+  .square {
+    height: 15vh;
+    width: 20vw;
+    font-size: 15vw;
+  }
+}
+@media (orientation: landscape) {
+  .square {
+    height: 15vh;
+    width: 15vw;
+    font-size: 15vh;
+  }
 }
